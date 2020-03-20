@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import clsx from 'clsx';
+import Button from '@material-ui/core/Button';
+
+
+
 
 // import { connect } from 'react-redux';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
@@ -10,7 +13,7 @@ import styles from './Header.module.scss';
 
 const Component = ({className, children}) => (
   <div className={clsx(className, styles.root)}>
-    <h2>Header</h2>
+    <Button variant="contained" color="primary" className={styles.button}><a href="https://google.com" className={styles.link}>Login</a></Button>
     {children}
   </div>
 );
@@ -35,3 +38,4 @@ export {
   // Container as Header,
   Component as HeaderComponent,
 };
+///export default Header;

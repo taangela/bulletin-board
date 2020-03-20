@@ -1,4 +1,24 @@
 @import '../../../styles/settings.scss';
 
-// .root {
-// }
+.root {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+
+  .title {
+      width: 100%;
+  }
+
+  .card {
+      flex: 2 1 25%;
+      max-width: 33%;
+      margin: 15px 10px;    
+  }
+  .link {
+    color: $font-dark;
+    text-decoration: none;
+    display: flex;
+    width: 100%;
+  }
+}
