@@ -1,7 +1,8 @@
 @import '../../../styles/settings.scss';
 
 .root {
-
+  background-color: $background-light;
+  
   .title {
       text-align: center;
   }
@@ -10,4 +11,9 @@
     justify-content: space-between;
     padding: 0 50px;
   }
+  .link {
+    color: white;
+
+  }
 }
+

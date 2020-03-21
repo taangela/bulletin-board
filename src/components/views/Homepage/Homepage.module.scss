@@ -2,22 +2,18 @@
 
 .root {
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
+  padding-top: 20px;
+  padding-bottom: 20px;
 
 
   .title {
       width: 100%;
   }
-
-  .card {
-      flex: 2 1 25%;
-      max-width: 33%;
-      margin: 15px 10px;    
-  }
+  
+ 
   .link {
     color: $font-dark;
-    text-decoration: none;
     display: flex;
     width: 100%;
   }
