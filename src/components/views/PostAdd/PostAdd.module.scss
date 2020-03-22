@@ -1,4 +1,33 @@
 @import '../../../styles/settings.scss';
 
-// .root {
-// }
+.root {
+  max-width: 700px;
+  margin: auto;
+  margin-top: 20px;
+  padding-bottom: 100px;
+
+
+  .header {
+    text-align: center;    
+  }
+
+  .textField {
+    margin: 10px;
+  }
+
+  .description {
+    margin: 10px;
+    width: 95%;
+  }
+  .button {
+    background-color: $background-light;
+    color: $font-dark;
+    margin: 10px;
+  }
+
+  .formControl{
+    margin: 10px;
+    width: 30%;
+  }
+
+}
