@@ -13,6 +13,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+
 
 // import { connect } from 'react-redux';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
@@ -32,8 +34,9 @@ const Component = ({ className, children }) => (
           required
           id="post-title"
           label="Title"
+          minlength="10"
           placeholder="Write min. 10 characters here"
-          className={styles.textField}
+          className={styles.titleField}
         />
         <TextField
           id="post-price"
@@ -47,46 +50,81 @@ const Component = ({ className, children }) => (
           rows="10"
           id="post-content"
           label="Description"
+          minlength="20"
           placeholder="Write min. 20 characters here"
           className={ styles.description}
         />
           
-        <div className={styles.contact}>
-          <TextField
-            required
-            id="post-mail"
-            label="E-mail"
-            className={styles.textField}
-          />
-          <TextField
-            id="post-phone"
-            label="Phone number"
-            className={styles.textField}
-          />
-          <FormControl className={styles.formControl}>
-            <InputLabel id="post-status">Status</InputLabel>
-            <Select
-              labelId="post-status-label"
-              id="post-status-select"
-            >
-              <MenuItem value={'draft'}>draft</MenuItem>
-              <MenuItem value={'published'}>published</MenuItem>
-              <MenuItem value={'closed'}>closed</MenuItem>
-            </Select>
-          </FormControl>
+        <Grid container spacing={2} className={styles.contact}>
+          <Grid item sm={4} xs={12}>
+            <TextField
+              required
+              id="author"
+              label="author"
+              className={styles.textField}
+            />
+          </Grid>
+
+          <Grid item sm={4} xs={12}>
+            <TextField
+              required
+              id="post-mail"
+              label="E-mail"
+              className={styles.textField}
+            />
+          </Grid>
+
+          <Grid item sm={4} xs={12}>
+            <TextField
+              id="post-phone"
+              label="Phone number"
+              className={styles.textField}
+            />
+          </Grid>
+
+          <Grid item sm={4} xs={12}>
+            <FormControl className={styles.formControl}>
+              <InputLabel id="post-status">Status</InputLabel>
+              <Select
+                labelId="post-status-label"
+                id="post-status-select"
+              >
+                <MenuItem value={'draft'}>draft</MenuItem>
+                <MenuItem value={'published'}>published</MenuItem>
+                <MenuItem value={'closed'}>closed</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
+
+
+        <div>
+          <Button
+            variant="contained"
+            component="label"
+            className={styles.button}
+          >
+            Upload picture
+            <input
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+            />
+          </Button>
         </div>
-        <Button
-          variant="contained"
-          component="label"
-          className={styles.button}
-        >
-          Upload picture
-          <input
-            type="file"
-            accept="image/*"
-            style={{ display: 'none' }}
-          />
-        </Button>
+
+        <div>
+          <Button
+            variant="contained"
+            component="label"
+            className={styles.button}
+          >
+            Submit
+            <input
+              style={{ display: 'none' }}
+            />
+          </Button>
+        </div>
       </CardContent>
     </Card>
     {children}

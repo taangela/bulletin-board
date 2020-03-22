@@ -11,6 +11,11 @@
     text-align: center;    
   }
 
+  .titleField {
+    margin: 10px;
+    width: 60%;
+  }
+
   .textField {
     margin: 10px;
   }
@@ -27,7 +32,7 @@
 
   .formControl{
     margin: 10px;
-    width: 30%;
+    width: 100%;
   }
 
 }

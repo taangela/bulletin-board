@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
+
+
 
 import clsx from 'clsx';
 
@@ -7,12 +10,21 @@ import clsx from 'clsx';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
 
 import styles from './NotFound.module.scss';
+import { settings } from '../../../settings';
+import Card from '@material-ui/core/Card';
+
+
 
 const Component = ({className, children}) => (
-  <div className={clsx(className, styles.root)}>
-    <h2>NotFound</h2>
+  <Card className={clsx(className, styles.root)}>
+    <div className={styles.content}>
+      <img src={settings.notFound} alt="404 error" className={styles.image} />
+    </div>
+    <div className={styles.content}>
+      <Button className={styles.button} size="large" href='/' variant="contained">Go to main page</Button>
+    </div>
     {children}
-  </div>
+  </Card>
 );
 
 Component.propTypes = {
