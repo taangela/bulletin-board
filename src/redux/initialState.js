@@ -69,5 +69,13 @@ export const initialState = {
       active: false,
       error: false,
     },
+    login: {
+      logged: false,
+      user: {
+        admin: false,
+        name: 'John Doe',
+        email: 'JohnLDoe@gmail.com',
+      },
+    },
   },
 };

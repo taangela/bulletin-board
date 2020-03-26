@@ -8,19 +8,30 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+
 
 import clsx from 'clsx';
 import styles from './Homepage.module.scss';
 
 import { connect } from 'react-redux';
 import { getAll } from '../../../redux/postsRedux.js';
+import {getLogStatus} from '../../../redux/loginRedux.js';
 import { settings } from '../../../settings.js';
 import {Link} from 'react-router-dom';
 
 //import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
 
-const Component = ({className, children, posts}) => (
+const Component = ({className, children, posts, login}) => (
   <Container className={clsx(className, styles.root)}>
+    {login ?
+      <Button
+        variant='contained'
+        href='/post/add'
+        className={styles.button}
+      >
+        Add new post
+      </Button> : null}
     <Grid container spacing={3}>
       {posts.map(el => (
         <Grid item sm={4} xs={12} key={el.id} >
@@ -54,11 +65,14 @@ Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   posts: PropTypes.array,
+  login: PropTypes.bool,
+
 
 };
 
 const mapStateToProps = state => ({
   posts: getAll(state),
+  login: getLogStatus(state),
 });
 
 // const mapDispatchToProps = dispatch => ({

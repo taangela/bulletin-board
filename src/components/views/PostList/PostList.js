@@ -1,55 +1,62 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import clsx from 'clsx';
-import Container from '@material-ui/core/Container';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Grid from '@material-ui/core/Grid';
 
-
-import { connect } from 'react-redux';
-import { getAll } from '../../../redux/postsRedux.js';
-import { settings } from '../../../settings.js';
-import {Link} from 'react-router-dom';
-// import { connect } from 'react-redux';
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 
 import styles from './PostList.module.scss';
+import { connect } from 'react-redux';
+import { getAll } from '../../../redux/postsRedux.js';
 
-const Component = ({className, children, posts}) => (
-  <Container className={clsx(className, styles.root)}>
-    <Grid container spacing={3}>
-      {posts.map(el => (
-        <Grid item sm={4} xs={12} key={el.id} >
-          <Card className={styles.card}>
-            <CardActionArea>
-              <CardMedia
-                component="img"
-                height="150"
-                image={el.image || settings.image}
-              />
-              <CardContent>
-                <h5>{el.title}</h5>
-                <p>{el.content}</p>
-              </CardContent>
-            </CardActionArea>
-            <CardActions>
-              <Link to={`/post/${el.id}`} className={styles.link}>
-                Read more
-              </Link>
-            </CardActions>
-          </Card>
-        </Grid>
-      ))}
+//import {connect} from 'react-redux';
+//import {reduxSelector, reduxActionCreator} from '../../../redux/example.js';
 
-      {children}
-    </Grid>
-  </Container>
-);
+const Component = ({ className, posts }) => {
+  return (
+    <div className={clsx(className, styles.root)}>
+      <div component={Paper} className={styles.container}>
+        <Table aria-label='simple table'>
+          <TableHead>
+            <TableRow>
+              <TableCell>TITLE</TableCell>
+              <TableCell align='right'>Publish Date</TableCell>
+              <TableCell align='right'>Eddition Date</TableCell>
+              <TableCell align='right'>Status</TableCell>
+              <TableCell align='right'></TableCell>
+              <TableCell align='right'></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {posts.map(el =>
+              el.author === 'John Doe' ? (
+                <TableRow key={el.id} hover>
+                  <TableCell component='th' scope='row'>
+                    {el.title}
+                  </TableCell>
+                  <TableCell align='right'>{el.date}</TableCell>
+                  <TableCell align='right'>{el.updateDate}</TableCell>
+                  <TableCell align='right'>{el.status}</TableCell>
+                  <TableCell align='right'>
+                    <Button href={`/post/${el.id}`}>View</Button>
+                  </TableCell>
+                  <TableCell align='right'>
+                    <Button href={`/post/${el.id}/edit`}>Edit</Button>
+                  </TableCell>
+                </TableRow>
+              ) : null
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  );
+};
 
 Component.propTypes = {
   children: PropTypes.node,
@@ -62,12 +69,17 @@ const mapStateToProps = state => ({
   posts: getAll(state),
 });
 
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
+
+// const mapStateToProps = state => ({
+//   someProp: reduxSelector(state),
 // });
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+// const mapDispatchToProps = dispatch => ({
+//   someAction: arg => dispatch(reduxActionCreator(arg),)
+// });
 const PostListContainer = connect(mapStateToProps)(Component);
+
+// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
   //Component as PostList,

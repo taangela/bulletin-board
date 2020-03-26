@@ -10,7 +10,13 @@
   .title {
       width: 100%;
   }
-  
+
+  .button{
+    margin: 15px 0;
+    background-color: $background-dark;
+    color: $font-light;
+  }
+
  
   .link {
     color: $font-dark;

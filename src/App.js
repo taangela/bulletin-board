@@ -31,7 +31,7 @@ const App = () => (
             <Switch>
               <Route exact path='/' component={Homepage} />
               <Route exact path='/post/add' component={PostAdd} />
-              <Route exact path='/post/list' component={PostList} />
+              <Route exact path='/list' component={PostList} />
               <Route exact path='/post/:id' component={Post} />
               <Route exact path='/post/:id/edit' component={PostEdit} />
               <Route path='*' component={NotFound} />

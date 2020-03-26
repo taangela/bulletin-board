@@ -1,4 +1,70 @@
 @import '../../../styles/settings.scss';
 
-// .root {
-// }
+.root {
+
+  max-width: 700px;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 50px;
+
+  .header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .image {
+      margin: auto;
+      width: 80%;
+      object-fit: cover;
+  }
+
+  .price {
+      display: flex;
+      padding: 15px;
+      height: 50%;
+      
+
+
+      h4, p {
+          margin: 0;
+          padding: 5px;
+      }
+
+      p {
+          width: 40%;
+        }
+  }
+
+  .status {
+    color: gray;
+    font-size: small;
+
+      p {
+        padding-left: 20px;
+      }
+  }
+
+  .contentWrapper {
+      //flex: 2 1 50%;
+
+      .content {
+          padding: 15px;
+          min-height: 150px;
+          margin: 0;
+          font-size: 18px;
+      }
+
+      .contact {
+
+          h5 {
+              margin: 10px;
+          }
+
+          > p {
+              margin: 0;
+              margin-left: 10px;
+          }
+      }
+  }
+}

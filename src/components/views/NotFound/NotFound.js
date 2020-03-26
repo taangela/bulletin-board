@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 
-
-
 import clsx from 'clsx';
 
 // import { connect } from 'react-redux';
@@ -12,8 +10,6 @@ import clsx from 'clsx';
 import styles from './NotFound.module.scss';
 import { settings } from '../../../settings';
 import Card from '@material-ui/core/Card';
-
-
 
 const Component = ({className, children}) => (
   <Card className={clsx(className, styles.root)}>

@@ -15,7 +15,6 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
-
 // import { connect } from 'react-redux';
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
 // import { getAll } from '../../../redux/postsRedux.js';
@@ -34,7 +33,7 @@ const Component = ({ className, children }) => (
           required
           id="post-title"
           label="Title"
-          minlength="10"
+          minLength="10"
           placeholder="Write min. 10 characters here"
           className={styles.titleField}
         />
@@ -50,7 +49,7 @@ const Component = ({ className, children }) => (
           rows="10"
           id="post-content"
           label="Description"
-          minlength="20"
+          minLength="20"
           placeholder="Write min. 20 characters here"
           className={ styles.description}
         />

@@ -2,40 +2,90 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Button from '@material-ui/core/Button';
+import Switch from '@material-ui/core/Switch';
 
-
-
-
-// import { connect } from 'react-redux';
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
 
 import styles from './Header.module.scss';
 
-const Component = ({className, children}) => (
-  <div className={clsx(className, styles.root)}>
-    <Button variant="contained" color="primary" className={styles.button}><a href="https://google.com" className={styles.link}>Login</a></Button>
-    {children}
-  </div>
-);
+import { connect } from 'react-redux';
+import {
+  loginSwitch,
+  getLogStatus,
+  getUser,
+} from '../../../redux/loginRedux.js';
+
+class Component extends React.Component {
+  checkStatus(login, loginSwitch, user) {
+    if (!login) {
+      return (
+        <Button
+          variant="contained"
+          className={clsx(styles.root, styles.button)}
+        >
+          <a href="https://google.com">Login</a>
+        </Button>
+      );
+    } else {
+      return (
+        <div className={clsx(styles.root)}>
+          <Button
+            variant='contained'
+            className={clsx(styles.button)}
+            href='/list'
+          >
+            My Posts
+          </Button>
+          <Button
+            variant='contained'
+            color='secondary'
+            className={clsx(styles.button)}
+            onClick={loginSwitch}
+          >
+            LogOut
+          </Button>
+        </div>
+      );
+    }
+  }
+  render() {
+    const { loginSwitch, login, user } = this.props;
+    return (
+      <div className={clsx(styles.root)}>
+        <Switch
+          onChange={loginSwitch}
+          inputProps={{ 'aria-label': 'primary checkbox' }}
+        />
+        {this.checkStatus(login, loginSwitch, user)}
+      </div>
+    );
+  }
+}
 
 Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
+  loginSwitch: PropTypes.func,
+  login: PropTypes.object,
+  user: PropTypes.object,
 };
 
-// const mapStateToProps = state => ({
-//   someProp: reduxSelector(state),
-// });
+const mapStateToProps = state => ({
+  login: getLogStatus(state),
+  user: getUser(state),
+});
 
+const mapDispatchToProps = dispatch => ({
+  loginSwitch: () => dispatch(loginSwitch()),
+});
 // const mapDispatchToProps = dispatch => ({
 //   someAction: arg => dispatch(reduxActionCreator(arg)),
 // });
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
+const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
-  Component as Header,
-  // Container as Header,
+  //Component as Header,
+  Container as HeaderContainer,
   Component as HeaderComponent,
 };
 ///export default Header;

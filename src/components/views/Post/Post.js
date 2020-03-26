@@ -14,11 +14,7 @@ import { connect } from 'react-redux';
 import { getAll } from '../../../redux/postsRedux.js';
 import { settings } from '../../../settings.js';
 
-
-
-
 // import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
-
 
 const Component = ({ className, children, posts, match }) => (
   <Container>
@@ -53,6 +49,8 @@ const Component = ({ className, children, posts, match }) => (
             <p>location: {el.location} </p>
             <p>phone: {el.phone} </p>
             <p>mail: {el.mail} </p>
+            <p>author: {el.author} </p>
+
           </div>
 
         </CardContent>

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Header } from '../Header/Header';
+import { HeaderContainer } from '../Header/Header';
 import {Link} from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -26,7 +26,7 @@ const Component = ({className, children}) => (
             Bulletin Board
           </Link>
         </Typography>
-        <Header />
+        <HeaderContainer />
       </Toolbar>
     </AppBar>
     {children}
