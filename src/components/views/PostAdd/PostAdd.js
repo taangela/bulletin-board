@@ -1,152 +1,156 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import clsx from 'clsx';
-
 import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import CardHeader from '@material-ui/core/CardHeader';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
+import shortid from 'shortid';
 
-// import { connect } from 'react-redux';
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
-// import { getAll } from '../../../redux/postsRedux.js';
+import { connect } from 'react-redux';
+import { getAll, addPost } from '../../../redux/postsRedux.js';
+import { getUser } from '../../../redux/loginRedux';
 
 import styles from './PostAdd.module.scss';
 
-const Component = ({ className, children }) => (
-  <Container className={clsx(className, styles.root)}>
-    <Card>
-      <CardHeader 
-        className={styles.header}
-        title="Add your own advertisement!"
-      />
-      <CardContent className={styles.cardContent}>
-        <TextField
-          required
-          id="post-title"
-          label="Title"
-          minLength="10"
-          placeholder="Write min. 10 characters here"
-          className={styles.titleField}
-        />
-        <TextField
-          id="post-price"
-          label="Price"
-          className={styles.textField}
-        />
-        <TextField
-          required
-          variant="outlined"
-          multiline
-          rows="10"
-          id="post-content"
-          label="Description"
-          minLength="20"
-          placeholder="Write min. 20 characters here"
-          className={ styles.description}
-        />
-          
-        <Grid container spacing={2} className={styles.contact}>
-          <Grid item sm={4} xs={12}>
-            <TextField
-              required
-              id="author"
-              label="author"
-              className={styles.textField}
-            />
-          </Grid>
+const Component = ({ className, addPost, user }) => {
 
-          <Grid item sm={4} xs={12}>
+  const today = new Date();
+  const day = today.getDate();
+  const month = today.getMonth();
+  const year = today.getFullYear();
+  const date = day + '/' + month + '/' + year;
+
+  const titleProps = {
+    minLength: 10,
+  };
+
+  const contentProps = {
+    minLength: 20,
+  };
+
+  const [post, setPost] = React.useState({
+    id: shortid.generate(),
+    date: date,
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log('Submitted');
+
+    await addPost(post);
+  };
+
+  const handleChange = async (event, name) => {
+    await setPost({
+      ...post,
+      [name]: event.target.value,
+    });
+  };
+
+  if(user.logged) {
+    return (
+      <Container className={clsx(className, styles.root)}>
+        <Card className={styles.card}>
+          <CardHeader title="Add new post"/>
+          <form className={styles.form} autoComplete="off" onSubmit={e => handleSubmit(e)}>
             <TextField
+              id="title"
+              label="Title"
               required
-              id="post-mail"
+              inputProps={titleProps}
+              value={post.title}
+              onChange={e => handleChange(e, 'title')}
+            />
+            <TextField
+              id="price"
+              label="Price"
+              type="number"
+              value={post.price}
+              onChange={e => handleChange(e, 'price')}
+            />
+            <TextField
+              variant="outlined"
+              multiline
+              id="content"
+              inputProps={contentProps}
+              label="Content"
+              placeholder="Write your post here"
+              rows="10"
+              required
+              value={post.content}
+              className={styles.content}
+              onChange={e => handleChange(e, 'content')}
+            />
+            <TextField
+              id="mail"
               label="E-mail"
-              className={styles.textField}
+              type="email"
+              required
+              value={post.mail}
+              onChange={e => handleChange(e, 'mail')}
             />
-          </Grid>
-
-          <Grid item sm={4} xs={12}>
             <TextField
-              id="post-phone"
+              id="phone"
               label="Phone number"
-              className={styles.textField}
+              type="number"
+              value={post.phone}
+              onChange={e => handleChange(e, 'phone')}
             />
-          </Grid>
-
-          <Grid item sm={4} xs={12}>
-            <FormControl className={styles.formControl}>
-              <InputLabel id="post-status">Status</InputLabel>
-              <Select
-                labelId="post-status-label"
-                id="post-status-select"
-              >
-                <MenuItem value={'draft'}>draft</MenuItem>
-                <MenuItem value={'published'}>published</MenuItem>
-                <MenuItem value={'closed'}>closed</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
-
-
-        <div>
-          <Button
-            variant="contained"
-            component="label"
-            className={styles.button}
-          >
-            Upload picture
-            <input
-              type="file"
-              accept="image/*"
-              style={{ display: 'none' }}
-            />
-          </Button>
-        </div>
-
-        <div>
-          <Button
-            variant="contained"
-            component="label"
-            className={styles.button}
-          >
-            Submit
-            <input
-              style={{ display: 'none' }}
-            />
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
-    {children}
-  </Container>
-);
-
-Component.propTypes = {
-  children: PropTypes.node,
-  className: PropTypes.string,
+            <Button variant="contained" component="label" className={styles.button}>
+              Upload picture
+              <input type="file" accept="image/*" style={{ display: 'none' }}  onChange={e => handleChange(e, 'image')} />
+            </Button>
+            <InputLabel id="demo-simple-select-label" className={styles.select}>Select</InputLabel>
+            <Select
+              labelId="post-status-label"
+              value="status"
+              id="post-status-select"
+            >
+              <MenuItem value={'draft'}>draft</MenuItem>
+              <MenuItem value={'published'}>published</MenuItem>
+              <MenuItem value={'closed'}>closed</MenuItem>
+            </Select>
+            <Button type="submit" color="secondary" variant="contained" className={styles.button}>Save</Button>
+          </form>
+        </Card>
+      </Container>
+    );
+  } else {
+    return (
+      <Container className={styles.root}>
+        <Card className={styles.container}>
+          <h3>Login to add new post!</h3>
+        </Card>
+      </Container>
+    );
+  }
 };
 
-// const mapStateToProps = state => ({
-//   posts: getAll(state),
-// });
+Component.propTypes = {
+  className: PropTypes.string,
+  addPost: PropTypes.func,
+  user: PropTypes.object,
 
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
+};
 
-// const PostContainer = connect(mapStateToProps)(Component);
+const mapStateToProps = state => ({
+  posts: getAll(state),
+  user: getUser(state),
+});
+
+const mapDispatchToProps = dispatch => ({
+  addPost: post => dispatch(addPost(post)),
+});
+
+const PostAddContainer = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
-  Component as PostAdd,
-  // PostContainer as PostAdd,
+  // Component as PostAdd,
+  PostAddContainer as PostAdd,
   Component as PostAddComponent,
 };

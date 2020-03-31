@@ -3,59 +3,41 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import Button from '@material-ui/core/Button';
 import Switch from '@material-ui/core/Switch';
-
-
 import styles from './Header.module.scss';
 
 import { connect } from 'react-redux';
-import {
-  loginSwitch,
-  getLogStatus,
-  getUser,
-} from '../../../redux/loginRedux.js';
+import { getUser, loginSwitch } from '../../../redux/loginRedux.js';
 
 class Component extends React.Component {
-  checkStatus(login, loginSwitch, user) {
-    if (!login) {
+  checkStatus( loginSwitch, user) {
+    if (!user) {
       return (
-        <Button
-          variant="contained"
-          className={clsx(styles.root, styles.button)}
-        >
+        <Button variant="contained" className={clsx(styles.root, styles.button)}>
           <a href="https://google.com">Login</a>
         </Button>
       );
     } else {
       return (
         <div className={clsx(styles.root)}>
-          <Button
-            variant='contained'
-            className={clsx(styles.button)}
-            href='/list'
-          >
+          <Button variant="contained" className={clsx(styles.button)} href='/list'>
             My Posts
           </Button>
-          <Button
-            variant='contained'
-            color='secondary'
-            className={clsx(styles.button)}
-            onClick={loginSwitch}
-          >
+          <Button variant='contained' color='secondary' className={clsx(styles.button)} onClick={loginSwitch}>
             LogOut
           </Button>
         </div>
       );
     }
   }
+
   render() {
-    const { loginSwitch, login, user } = this.props;
+    const { loginSwitch, user} = this.props;
+    const login = user.logged;
+
     return (
       <div className={clsx(styles.root)}>
-        <Switch
-          onChange={loginSwitch}
-          inputProps={{ 'aria-label': 'primary checkbox' }}
-        />
-        {this.checkStatus(login, loginSwitch, user)}
+        <Switch onChange={loginSwitch} inputProps={{ 'aria-label': 'primary checkbox' }}/>
+        {this.checkStatus(loginSwitch, login)}
       </div>
     );
   }
@@ -64,22 +46,17 @@ class Component extends React.Component {
 Component.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
+  title: PropTypes.string,
   loginSwitch: PropTypes.func,
-  login: PropTypes.object,
   user: PropTypes.object,
 };
 
 const mapStateToProps = state => ({
-  login: getLogStatus(state),
   user: getUser(state),
 });
-
 const mapDispatchToProps = dispatch => ({
   loginSwitch: () => dispatch(loginSwitch()),
 });
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
@@ -88,4 +65,3 @@ export {
   Container as HeaderContainer,
   Component as HeaderComponent,
 };
-///export default Header;

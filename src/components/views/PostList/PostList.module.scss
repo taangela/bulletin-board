@@ -13,11 +13,26 @@
     justify-content: space-between;
   }
 
+  .tableBody{
+    overflow-x: auto;
+  }
+
   .image {
       margin: auto;
       width: 80%;
       object-fit: cover;
   }
+
+  .button{
+    margin: 15px;
+    background-color: $background-dark;
+    color: $font-light;
+  }
+
+  h3 {
+    text-align: center;
+  }
+
 
   .price {
       display: flex;
@@ -66,5 +81,15 @@
               margin-left: 10px;
           }
       }
+  }
+}
+
+@media (max-width: 576px) {
+
+  .root{
+
+    .container {
+      flex-direction: column;
+    }
   }
 }

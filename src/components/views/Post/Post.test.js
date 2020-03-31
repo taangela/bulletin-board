@@ -3,10 +3,15 @@ import { shallow } from 'enzyme';
 import { PostComponent } from './Post';
 
 const mockProps = {
-  match: { params: { id: '1' } },
   posts: [
-    { id: '1', title: 'Test title', content: 'Test content' },
+    { id: '1', title: 'test', content: 'test' },
+    { id: '2', title: 'test2', content: 'test 2' },
   ],
+  match: { params: { id: '1' }},
+  user: {
+    id: '1',
+    logged: false,
+  },
 };
 
 describe('Component Post', () => {

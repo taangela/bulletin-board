@@ -13,6 +13,7 @@ export const initialState = {
         image: 'https://i.ebayimg.com/00/s/MTAyNFg3Njg=/z/MAUAAOSwWEZec1xu/$_86.JPG',
         phone: '987 594 000',
         location: 'Oxford',
+        userId: '1',
       },
       {
         id: '2',
@@ -25,6 +26,7 @@ export const initialState = {
         status: 'published',
         image: 'https://i.ebayimg.com/00/s/NDAwWDUzMw==/z/A4gAAOSwAsFebq0A/$_86.JPG',
         location: 'London',
+        userId: '2',
       },
       {
         id: '3',
@@ -39,6 +41,7 @@ export const initialState = {
         image: 'https://i.ebayimg.com/00/s/NjQwWDQ4MA==/z/jyMAAOSwUlBecOdJ/$_86.JPG',
         phone: '123 594 000',
         location:'Liverpool',
+        userId: '2',
       },
       {
         id: '4',
@@ -51,6 +54,7 @@ export const initialState = {
         price: '5000',
         status: 'published',
         image:'https://6img.wprost.pl/_thumb/6a/59/786f69c16365c84a6c63a6ebef04.jpeg',
+        userId: '3',
       },
       {
         id: '5',
@@ -63,19 +67,17 @@ export const initialState = {
         price: '20',
         status: 'published',
         phone: '888 594 000',
+        userId: '3',
       },
     ],
     loading: {
       active: false,
       error: false,
     },
-    login: {
-      logged: false,
-      user: {
-        admin: false,
-        name: 'John Doe',
-        email: 'JohnLDoe@gmail.com',
-      },
-    },
+  },
+  user: {
+    id: '3',
+    logged: false,
+    name: 'John Doe',
   },
 };

@@ -50,6 +50,12 @@
   .contentWrapper {
       //flex: 2 1 50%;
 
+      .button {
+        background-color: $background-dark;
+        color: $font-light;
+        margin: 5px;
+      }
+
       .content {
           padding: 15px;
           min-height: 150px;

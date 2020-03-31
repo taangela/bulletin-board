@@ -2,10 +2,7 @@
 
 .root {
   background-color: $background-light;
-  
-  .title {
-      text-align: center;
-  }
+  height: 1000px;  
 
   .content {
     justify-content: space-between;
@@ -17,3 +14,14 @@
   }
 }
 
+@media (max-width: 576px) {
+
+  .root {
+
+    .content{
+      display: block;
+      margin-top: 10px;
+      text-align: center;
+    }
+  }
+}

@@ -1,30 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-
+import Button from '@material-ui/core/Button';
 import clsx from 'clsx';
-import styles from './Post.module.scss';
 
 import { connect } from 'react-redux';
 import { getAll } from '../../../redux/postsRedux.js';
+import { getUser } from '../../../redux/loginRedux';
 import { settings } from '../../../settings.js';
 
-// import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
+import styles from './Post.module.scss';
 
-const Component = ({ className, children, posts, match }) => (
-  <Container>
-
+const Component = ({ className, match, posts, user }) => (
+  <Container className={clsx(className, styles.root)}>
     {posts.filter(el => el.id === match.params.id).map(el => (
-      <Card key={el.id} className={clsx(className, styles.root)}>
+      <Card key={el.id}>
         <div className= {styles.header}>
-          <CardHeader
-            title={el.title}
-          />
+          <CardHeader title={el.title}/>
           <div className={styles.price}>
             <h4>PRICE</h4>
             <p>${el.price || settings.price}</p>
@@ -32,13 +28,7 @@ const Component = ({ className, children, posts, match }) => (
         </div>
 
         <CardContent className={styles.status}>
-          <CardMedia
-            component="img"
-            alt="img"
-            image={el.image || settings.image}
-            title="img"
-            className={styles.image}
-          />
+          <CardMedia component="img" alt="img" image={el.image || settings.image} title="img" className={styles.image}/>
           <p>{`published: ${el.date}/ updated: ${el.updateDate}`}</p>
         </CardContent>
         
@@ -50,41 +40,35 @@ const Component = ({ className, children, posts, match }) => (
             <p>phone: {el.phone} </p>
             <p>mail: {el.mail} </p>
             <p>author: {el.author} </p>
-
           </div>
-
+          {user.logged && user.id === el.userId ?
+            <Button className={styles.button} href={`/post/${el.id}/edit`}>
+              Edit post
+            </Button>: null}
         </CardContent>
-
-    
       </Card>
     ))}
-    {children}
   </Container>
 );
 
 Component.propTypes = {
-  children: PropTypes.node,
   className: PropTypes.string,
   posts: PropTypes.array,
+  user: PropTypes.object,
+
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string,
     }),
   }),
-
 };
 
 const mapStateToProps = state => ({
   posts: getAll(state),
+  user: getUser(state),
 });
 
-
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
 const PostContainer = connect(mapStateToProps)(Component);
-
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
   //Component as Post,

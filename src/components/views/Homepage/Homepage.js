@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -9,78 +8,71 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-
-
 import clsx from 'clsx';
-import styles from './Homepage.module.scss';
 
 import { connect } from 'react-redux';
-import { getAll } from '../../../redux/postsRedux.js';
-import {getLogStatus} from '../../../redux/loginRedux.js';
+import { getAll, loadPostsRequest } from '../../../redux/postsRedux.js';
+import { Link } from 'react-router-dom';
 import { settings } from '../../../settings.js';
-import {Link} from 'react-router-dom';
+import { getUser } from '../../../redux/loginRedux.js';
 
-//import { reduxSelector, reduxActionCreator } from '../../../redux/exampleRedux.js';
+import styles from './Homepage.module.scss';
 
-const Component = ({className, children, posts, login}) => (
-  <Container className={clsx(className, styles.root)}>
-    {login ?
-      <Button
-        variant='contained'
-        href='/post/add'
-        className={styles.button}
-      >
-        Add new post
-      </Button> : null}
-    <Grid container spacing={3}>
-      {posts.map(el => (
-        <Grid item sm={4} xs={12} key={el.id} >
-          <Card className={styles.card}>
-            <CardActionArea>
-              <CardMedia
-                component="img"
-                height="150"
-                image={el.image || settings.image}
-              />
-              <CardContent>
-                <h5>{el.title}</h5>
-                <p>{el.content}</p>
-              </CardContent>
-            </CardActionArea>
-            <CardActions>
-              <Link to={`/post/${el.id}`} className={styles.link}>
-                Read more
-              </Link>
-            </CardActions>
-          </Card>
+class Component extends React.Component {
+
+  static propTypes = {
+    className: PropTypes.string,
+    posts: PropTypes.array,
+    loadPosts: PropTypes.func,
+    user: PropTypes.object,
+  }
+
+  render() {
+    const { className,  posts, user} = this.props;
+    const login = user.logged;
+
+    return (
+      <Container className={clsx(className, styles.root)}>
+        {login ?
+          <Button variant='contained' href='/post/add' className={styles.button}>
+            Add new post
+          </Button> :null}
+        <Grid container spacing={3}>
+          {posts.map(el => (
+            <Grid item sm={4} xs={12} key={el.id}>
+              <Card className={styles.card}>
+                <CardActionArea>
+                  <CardMedia component="img" height="150" image={el.image || settings.image}/>
+                  <CardContent>
+                    <h5>{el.title}</h5>
+                    <p>{el.content}</p>
+                  </CardContent>
+                </CardActionArea>
+                <CardActions>
+                  <Link to={`/post/${el.id}`} className={styles.link}>
+                    Read more
+                  </Link>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
         </Grid>
-      ))}
+      </Container>
+    );
+  }
+} 
 
-      {children}
-    </Grid>
-  </Container>
-);
-
-Component.propTypes = {
-  children: PropTypes.node,
-  className: PropTypes.string,
-  posts: PropTypes.array,
-  login: PropTypes.bool,
-
-
-};
 
 const mapStateToProps = state => ({
   posts: getAll(state),
-  login: getLogStatus(state),
+  user: getUser(state),
 });
 
-// const mapDispatchToProps = dispatch => ({
-//   someAction: arg => dispatch(reduxActionCreator(arg)),
-// });
+const mapDispatchToProps = (dispatch, state) => ({
+  loadPosts: () => dispatch(loadPostsRequest(state)),
+});
 
-// const Container = connect(mapStateToProps, mapDispatchToProps)(Component);
-const HomepageContainer = connect(mapStateToProps)(Component);
+const HomepageContainer = connect(mapStateToProps, mapDispatchToProps)(Component);
 
 export {
   //Component as Homepage,
