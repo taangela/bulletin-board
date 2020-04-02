@@ -56,6 +56,24 @@
         margin: 5px;
       }
 
+      .link {
+        background-color: $background-dark;
+        color: white;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 0.875rem;
+        margin: 10px;
+        transition-duration: 0.4s;
+        border-radius: 4px;
+        text-transform: uppercase;
+        &:hover {
+          background-color: #008CBA;
+          color: white;
+        }
+      }
+
       .content {
           padding: 15px;
           min-height: 150px;

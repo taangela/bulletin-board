@@ -7,6 +7,10 @@ const mockProps = {
     { id: '1', title: 'test', content: 'test' },
     { id: '2', title: 'test2', content: 'test 2' },
   ],
+  user: {
+    id: '5',
+    logged: true,
+  },
   match: { params: { id: '1' } },
 };
 

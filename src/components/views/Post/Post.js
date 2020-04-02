@@ -5,13 +5,14 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import clsx from 'clsx';
 
 import { connect } from 'react-redux';
 import { getAll } from '../../../redux/postsRedux.js';
 import { getUser } from '../../../redux/loginRedux';
 import { settings } from '../../../settings.js';
+import { Link } from 'react-router-dom';
+
 
 import styles from './Post.module.scss';
 
@@ -29,7 +30,7 @@ const Component = ({ className, match, posts, user }) => (
 
         <CardContent className={styles.status}>
           <CardMedia component="img" alt="img" image={el.image || settings.image} title="img" className={styles.image}/>
-          <p>{`published: ${el.date}/ updated: ${el.updateDate}`}</p>
+          <p>{`published: ${el.date}/ updated: ${el.updateDate || ''}`}</p>
         </CardContent>
         
         <CardContent className={styles.contentWrapper}>
@@ -42,9 +43,8 @@ const Component = ({ className, match, posts, user }) => (
             <p>author: {el.author} </p>
           </div>
           {user.logged && user.id === el.userId ?
-            <Button className={styles.button} href={`/post/${el.id}/edit`}>
-              Edit post
-            </Button>: null}
+            <Link to={`/post/${el.id}/edit`} className={styles.link}>Edit</Link>
+            : null}
         </CardContent>
       </Card>
     ))}

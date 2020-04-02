@@ -13,14 +13,27 @@ import clsx from 'clsx';
 
 import { connect } from 'react-redux';
 import { getAll, updatePost} from '../../../redux/postsRedux.js';
+import { getUser } from '../../../redux/loginRedux';
+
 
 import styles from './PostEdit.module.scss';
 
-const Component = ({ className, posts, updatePost, match }) => {
+const Component = ({ className, posts, updatePost, match, user }) => {
  
   const postArray = posts.filter(el => el.id === match.params.id);
 
-  const [post, setPost] = React.useState(postArray[0]);
+  const today = new Date();
+  const day = today.getDate();
+  const month = today.getMonth();
+  const year = today.getFullYear();
+  const updateDateString = day + '.' + month + '.' + year;
+
+
+  
+  const [post, setPost] = React.useState(postArray[0],{
+    updateDate: updateDateString,
+  });
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,85 +44,96 @@ const Component = ({ className, posts, updatePost, match }) => {
     await setPost({
       ...post,
       [name]: event.target.value,
+      updateDate: updateDateString,
     });
   };
 
-  return( 
-    <Container className={clsx(className, styles.root)}>
-      <Card className={styles.card}>
-        <CardHeader title="Edit your post!"/>
-        <form className={styles.form} onSubmit={e => handleSubmit(e)}>
-          <TextField
-            required
-            id="post-title"
-            label="Title"
-            minLength="10"
-            placeholder="Write min. 10 characters here"
-            value={post.title}
-            onChange={e => handleChange(e, 'title')}
-            className={styles.textField}
-          />
-          <TextField
-            id="post-price"
-            label="Price"
-            className={styles.textField}
-            type="number"
-            value={post.price}
-            onChange={e => handleChange(e, 'price')}
-          />
-          <TextField
-            required
-            variant="outlined"
-            multiline
-            rows="10"
-            id="post-content"
-            label="Description"
-            minLength="20"
-            placeholder="Write min. 20 characters here"
-            className={styles.textField}
-            value={post.content}
-            onChange={e => handleChange(e, 'content')}
-          />
-          <TextField
-            required
-            id="post-mail"
-            label="E-mail"
-            className={styles.textField}
-            value={post.mail}
-            onChange={e => handleChange(e, 'mail')}
-          />
-          <TextField
-            id="post-phone"
-            label="Phone number"
-            className={styles.textField}
-            value={post.phone}
-            onChange={e => handleChange(e, 'phone')}
-          />
-          <InputLabel id="demo-simple-select-label"  className={styles.select}>Select</InputLabel>
-          <Select
-            labelId="post-status-label"
-            value="status"
-            id="post-status-select"
-          >
-            <MenuItem value={'draft'}>draft</MenuItem>
-            <MenuItem value={'published'}>published</MenuItem>
-            <MenuItem value={'closed'}>closed</MenuItem>
-          </Select>
-          <Button variant="contained" component="label" className={styles.button}>
-            Upload picture
-            <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => handleChange(e, 'image')}/>
-          </Button>
-          <Button type="submit" color="secondary" variant="contained" className={styles.button}>Save</Button>  
-        </form>
-      </Card>
-    </Container>
-  );
+  if(user.logged) {
+    return( 
+      <Container className={clsx(className, styles.root)}>
+        <Card className={styles.card}>
+          <CardHeader title="Edit your post!"/>
+          <form className={styles.form} onSubmit={e => handleSubmit(e)}>
+            <div>
+              <p>mail: {post.mail} </p>
+              <p>author: {post.author} </p>
+            </div>    
+
+            <TextField
+              required
+              id="post-title"
+              label="Title"
+              minLength="10"
+              placeholder="Write min. 10 characters here"
+              value={post.title}
+              onChange={e => handleChange(e, 'title')}
+              className={styles.textField}
+            />
+            <TextField
+              id="post-price"
+              label="Price"
+              className={styles.textField}
+              type="number"
+              value={post.price}
+              onChange={e => handleChange(e, 'price')}
+            />
+            <TextField
+              required
+              variant="outlined"
+              multiline
+              rows="10"
+              id="post-content"
+              label="Description"
+              minLength="20"
+              placeholder="Write min. 20 characters here"
+              className={styles.textField}
+              value={post.content}
+              onChange={e => handleChange(e, 'content')}
+            />
+            <TextField
+              id="post-phone"
+              label="Phone number"
+              className={styles.textField}
+              value={post.phone}
+              onChange={e => handleChange(e, 'phone')}
+            />
+            <InputLabel className={styles.select}>Status</InputLabel>
+            <Select
+              labelId="post-status-label"
+              value={post.status}
+              id="post-status-select"
+              onChange={e => handleChange(e, 'status')}
+            >
+              <MenuItem value={'draft'}>draft</MenuItem>
+              <MenuItem value={'published'}>published</MenuItem>
+              <MenuItem value={'closed'}>closed</MenuItem>
+            </Select>
+            <Button variant="contained" component="label" className={styles.button}>
+              Upload picture
+              <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => handleChange(e, 'image')}/>
+            </Button>
+            <Button type="submit" color="secondary" variant="contained" className={styles.button}>Save</Button>  
+          </form>
+        </Card>
+      </Container>
+    );
+  } else {
+    return (
+      <Container className={styles.root}>
+        <Card className={styles.container}>
+          <h3>Login to edit your post!</h3>
+        </Card>
+      </Container>
+    );
+  }
 };
 
 Component.propTypes = {
   className: PropTypes.string,
   posts: PropTypes.array,
   updatePost: PropTypes.func,
+  user: PropTypes.object,
+
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string,
@@ -119,6 +143,7 @@ Component.propTypes = {
 
 const mapStateToProps = state => ({
   posts: getAll(state),
+  user: getUser(state),
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -23,7 +23,8 @@ const Component = ({ className, addPost, user }) => {
   const day = today.getDate();
   const month = today.getMonth();
   const year = today.getFullYear();
-  const date = day + '/' + month + '/' + year;
+  const date = day + '.' + month + '.' + year;
+
 
   const titleProps = {
     minLength: 10,
@@ -36,12 +37,13 @@ const Component = ({ className, addPost, user }) => {
   const [post, setPost] = React.useState({
     id: shortid.generate(),
     date: date,
+    mail: user.mail,
+    userId: user.id,
+    author: user.author,
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitted');
-
     await addPost(post);
   };
 
@@ -58,6 +60,10 @@ const Component = ({ className, addPost, user }) => {
         <Card className={styles.card}>
           <CardHeader title="Add new post"/>
           <form className={styles.form} autoComplete="off" onSubmit={e => handleSubmit(e)}>
+            <div>
+              <p>mail: {user.mail} </p>
+              <p>author: {user.author} </p>
+            </div>
             <TextField
               id="title"
               label="Title"
@@ -87,14 +93,6 @@ const Component = ({ className, addPost, user }) => {
               onChange={e => handleChange(e, 'content')}
             />
             <TextField
-              id="mail"
-              label="E-mail"
-              type="email"
-              required
-              value={post.mail}
-              onChange={e => handleChange(e, 'mail')}
-            />
-            <TextField
               id="phone"
               label="Phone number"
               type="number"
@@ -105,11 +103,13 @@ const Component = ({ className, addPost, user }) => {
               Upload picture
               <input type="file" accept="image/*" style={{ display: 'none' }}  onChange={e => handleChange(e, 'image')} />
             </Button>
-            <InputLabel id="demo-simple-select-label" className={styles.select}>Select</InputLabel>
+            <InputLabel id="demo-simple-select-label" className={styles.select}>Status</InputLabel>
             <Select
               labelId="post-status-label"
-              value="status"
+              value={post.status}
               id="post-status-select"
+              onChange={e => handleChange(e, 'status')}
+
             >
               <MenuItem value={'draft'}>draft</MenuItem>
               <MenuItem value={'published'}>published</MenuItem>

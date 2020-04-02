@@ -11,7 +11,6 @@ const reducers = {
   posts: postsReducer,
   user: loginReducer,
   login: loginReducer,
-
 };
 
 // add blank reducers for initial state properties without reducers

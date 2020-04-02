@@ -6,10 +6,10 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
 
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getUser } from '../../../redux/loginRedux';
 import { getAll } from '../../../redux/postsRedux.js';
@@ -31,7 +31,7 @@ class Component extends React.Component {
       return (
         <Container className={clsx(className, styles.root)}>
           <Card className={styles.container}>
-            <Button variant="contained" href="/post/add" className={styles.button}>Add new post</Button>
+            <Link to={`/post/add`} className={styles.link}>Add new post</Link>
             <div className ={styles.tableBody}>
               <Table aria-label='simple table'>
                 <TableHead>
@@ -52,10 +52,10 @@ class Component extends React.Component {
                       <TableCell align='right'>{el.updateDate}</TableCell>
                       <TableCell align='right'>{el.status}</TableCell>
                       <TableCell align='right'>
-                        <Button href={`/post/${el.id}`}>View</Button>
+                        <Link to={`/post/${el.id}`} className={styles.tableLink}>View</Link>
                       </TableCell>
                       <TableCell align='right'>
-                        <Button href={`/post/${el.id}/edit`}>Edit</Button>
+                        <Link to={`/post/${el.id}/edit`} className={styles.tableLink}>Edit</Link>
                       </TableCell>
                     </TableRow>
                   ))}

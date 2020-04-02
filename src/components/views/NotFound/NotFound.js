@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import clsx from 'clsx';
 
+import { Link } from 'react-router-dom';
 import { settings } from '../../../settings';
 
 import styles from './NotFound.module.scss';
@@ -15,7 +15,7 @@ const Component = ({className}) => (
       <img src={settings.notFound} alt="404 error" className={styles.image} />
     </div>
     <div className={styles.content}>
-      <Button className={styles.button} size="large" href='/' variant="contained">Go to main page</Button>
+      <Link to={`/`} className={styles.link}>Go to main page</Link>
     </div>
   </Card>
 );
