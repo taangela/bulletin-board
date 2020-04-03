@@ -37,7 +37,9 @@ class Component extends React.Component {
 
     return (
       <div className={clsx(styles.root)}>
-        <Switch onChange={loginSwitch} inputProps={{ 'aria-label': 'primary checkbox' }}/>
+        <Switch onChange={loginSwitch} 
+          checked={login}
+          inputProps={{ 'aria-label': 'primary checkbox' }}/>
         {this.checkStatus(loginSwitch, login)}
       </div>
     );
