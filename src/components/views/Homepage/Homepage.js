@@ -27,7 +27,10 @@ class Component extends React.Component {
     user: PropTypes.object,
   }
 
-
+  componentDidMount() {
+    this.props.fetchPublished();
+  }
+  
   render() {
     const { className,  posts, user} = this.props;
     const login = user.logged;
@@ -35,14 +38,16 @@ class Component extends React.Component {
     return (
       <Container className={clsx(className, styles.root)}>
         {login ?
-          <Link to={`/post/add`} className={styles.linkAdd}>Add new post</Link>
+          <Link to={`/posts/add`} className={styles.linkAdd}>Add new post</Link>
           :null}
         <Grid container spacing={3}>
+        {console.log("posts: ", posts)}
+
           {posts.map(el => (
             <Grid item sm={4} xs={12} key={el.id}>
               <Card className={styles.card}>
                 <CardActionArea>
-                  <Link to={`/post/${el.id}`} className={styles.linkContent}>
+                  <Link to={`/posts/${el.id}`} className={styles.linkContent}>
                     <CardMedia component="img" height="150" image={el.image || settings.image}/>
                     <CardContent>
                       <h5>{el.title}</h5>
@@ -51,7 +56,7 @@ class Component extends React.Component {
                   </Link>
                 </CardActionArea>
                 <CardActions>
-                  <Link to={`/post/${el.id}`} className={styles.link}>Read more</Link>
+                  <Link to={`/posts/${el.id}`} className={styles.link}>Read more</Link>
                 </CardActions>
               </Card>
             </Grid>
@@ -71,6 +76,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch, state) => ({
   fetchPublished: () => dispatch(fetchPublished(state)),
 });
+
+
 
 const HomepageContainer = connect(mapStateToProps, mapDispatchToProps)(Component);
 

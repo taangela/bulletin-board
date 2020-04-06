@@ -31,6 +31,7 @@ class Component extends React.Component {
       return (
         <Container className={clsx(className, styles.root)}>
           <Card className={styles.container}>
+            {console.log("post: ", posts)}
             <Link to={`/post/add`} className={styles.link}>Add new post</Link>
             <div className ={styles.tableBody}>
               <Table aria-label='simple table'>

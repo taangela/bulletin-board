@@ -1,5 +1,5 @@
 import Axios from 'axios';
-import { api } from '../settings.js';
+//import { api } from '../settings.js';
 
 /* selectors */
 export const getAll = ({ posts }) => posts.data;
@@ -32,7 +32,7 @@ export const fetchPublished = () => {
     dispatch(fetchStarted());
 
     Axios
-      .get(`${api.url}/${api.posts}`)
+      .get('http://localhost:8000/api/posts')
       .then(res => {
         dispatch(fetchSuccess(res.data));
       })

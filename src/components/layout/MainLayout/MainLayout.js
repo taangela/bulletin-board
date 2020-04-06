@@ -9,6 +9,8 @@ import { HeaderContainer } from '../Header/Header';
 import {Link} from 'react-router-dom';
 import styles from './MainLayout.module.scss';
 
+
+
 const Component = ({className, children}) => (
   <div className={clsx(className, styles.root)}>
     <AppBar position="static">
