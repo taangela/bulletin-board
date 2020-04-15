@@ -7,7 +7,7 @@ export const initialState = {
     },
   },
   user: {
-    mail: 'the.admin@example.com',
+    mail: 'JohnDoe@gmail.com',
     logged: false,
   },
 };

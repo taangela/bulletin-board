@@ -31,8 +31,7 @@ class Component extends React.Component {
       return (
         <Container className={clsx(className, styles.root)}>
           <Card className={styles.container}>
-            {console.log("post: ", posts)}
-            <Link to={`/post/add`} className={styles.link}>Add new post</Link>
+            <Link to={`/posts/add`} className={styles.link}>Add new post</Link>
             <div className ={styles.tableBody}>
               <Table aria-label='simple table'>
                 <TableHead>
@@ -46,17 +45,17 @@ class Component extends React.Component {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {posts.filter(el => el.userId === user.id).map(el => (
+                  {posts.filter(el => el.author === user.mail).map(el => (
                     <TableRow key={el.id} hover>
                       <TableCell component='th' scope='row'>{el.title}</TableCell>
-                      <TableCell align='right'>{el.date}</TableCell>
-                      <TableCell align='right'>{el.updateDate}</TableCell>
+                      <TableCell align='right'>{el.created}</TableCell>
+                      <TableCell align='right'>{el.updated}</TableCell>
                       <TableCell align='right'>{el.status}</TableCell>
                       <TableCell align='right'>
-                        <Link to={`/post/${el.id}`} className={styles.tableLink}>View</Link>
+                        <Link to={`/posts/${el._id}`} className={styles.tableLink}>View</Link>
                       </TableCell>
                       <TableCell align='right'>
-                        <Link to={`/post/${el.id}/edit`} className={styles.tableLink}>Edit</Link>
+                        <Link to={`/posts/${el._id}/edit`} className={styles.tableLink}>Edit</Link>
                       </TableCell>
                     </TableRow>
                   ))}

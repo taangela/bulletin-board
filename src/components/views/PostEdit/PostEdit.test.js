@@ -4,8 +4,8 @@ import { PostEditComponent } from './PostEdit';
 
 const mockProps = {
   posts: [
-    { id: '1', title: 'test', content: 'test' },
-    { id: '2', title: 'test2', content: 'test 2' },
+    { id: '1', title: 'test', text: 'test' },
+    { id: '2', title: 'test2', text: 'test 2' },
   ],
   user: {
     id: '5',

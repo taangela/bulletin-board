@@ -8,53 +8,55 @@ import CardContent from '@material-ui/core/CardContent';
 import clsx from 'clsx';
 
 import { connect } from 'react-redux';
-import { getAll } from '../../../redux/postsRedux.js';
 import { getUser } from '../../../redux/loginRedux';
-import { settings } from '../../../settings.js';
+import { getPostById } from '../../../redux/postsRedux.js';
+import { settings, IMAGES_URL } from '../../../settings.js';
 import { Link } from 'react-router-dom';
 
 
 import styles from './Post.module.scss';
 
-const Component = ({ className, match, posts, user }) => (
-  <Container className={clsx(className, styles.root)}>
-    {posts.filter(el => el.id === match.params.id).map(el => (
-      <Card key={el.id}>
-        <div className= {styles.header}>
-          <CardHeader title={el.title}/>
-          <div className={styles.price}>
-            <h4>PRICE</h4>
-            <p>${el.price || settings.price}</p>
-          </div>
-        </div>
 
-        <CardContent className={styles.status}>
-          <CardMedia component="img" alt="img" image={el.image || settings.image} title="img" className={styles.image}/>
-          <p>{`published: ${el.date}/ updated: ${el.updateDate || ''}`}</p>
-        </CardContent>
-        
-        <CardContent className={styles.contentWrapper}>
-          <p className={styles.content}>{el.content}</p>
-          <div className={styles.contact}>
-            <h5>CONTACT</h5>
-            <p>location: {el.location} </p>
-            <p>phone: {el.phone} </p>
-            <p>mail: {el.mail} </p>
-            <p>author: {el.author} </p>
-          </div>
-          {user.logged && user.id === el.userId ?
-            <Link to={`/post/${el.id}/edit`} className={styles.link}>Edit</Link>
-            : null}
-        </CardContent>
-      </Card>
-    ))}
+const Component = ({ className, post, user }) => (
+  <Container className={clsx(className, styles.root)}>
+    {console.log('post ', post )}
+    <Card key={post._id}>
+      <div className= {styles.header}>
+
+        <CardHeader title={post.title}/>
+        <div className={styles.price}>
+          <h4>PRICE</h4>
+          <p>${post.price || settings.price}</p>
+        </div>
+      </div>
+
+      <CardContent className={styles.status}>
+        <CardMedia component="img" alt="img" image={post.photo ? `${IMAGES_URL}/${post.photo}` : settings.image} title="img" className={styles.image}/>
+        <p>{`published: ${post.created}/ updated: ${post.updated || ''}`}</p>
+      </CardContent>
+      
+      <CardContent className={styles.contentWrapper}>
+        <p className={styles.content}>{post.text}</p>
+        <div className={styles.contact}>
+          <h5>CONTACT</h5>
+          <p>location: {post.location} </p>
+          <p>phone: {post.phone} </p>
+          <p>author: {post.author} </p>
+        </div>
+        {user.logged && user.mail === post.author ?
+          <Link to={`/posts/${post._id}/edit`} className={styles.link}>Edit</Link>
+          : null}
+      </CardContent>
+    </Card>
   </Container>
 );
 
 Component.propTypes = {
   className: PropTypes.string,
-  posts: PropTypes.array,
+  post: PropTypes.object,
   user: PropTypes.object,
+  fetchPost: PropTypes.func,
+
 
   match: PropTypes.shape({
     params: PropTypes.shape({
@@ -63,8 +65,8 @@ Component.propTypes = {
   }),
 };
 
-const mapStateToProps = state => ({
-  posts: getAll(state),
+const mapStateToProps = (state, props) => ({
+  post: getPostById(state, props.match.params.id),
   user: getUser(state),
 });
 

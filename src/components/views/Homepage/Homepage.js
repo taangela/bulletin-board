@@ -12,7 +12,7 @@ import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { fetchPublished, getPublished } from '../../../redux/postsRedux.js';
 import { Link } from 'react-router-dom';
-import { settings } from '../../../settings.js';
+import { settings, IMAGES_URL } from '../../../settings.js';
 import { getUser } from '../../../redux/loginRedux.js';
 
 import styles from './Homepage.module.scss';
@@ -41,22 +41,20 @@ class Component extends React.Component {
           <Link to={`/posts/add`} className={styles.linkAdd}>Add new post</Link>
           :null}
         <Grid container spacing={3}>
-        {console.log("posts: ", posts)}
 
           {posts.map(el => (
-            <Grid item sm={4} xs={12} key={el.id}>
+            <Grid item sm={4} xs={12} key={el._id}>
               <Card className={styles.card}>
                 <CardActionArea>
-                  <Link to={`/posts/${el.id}`} className={styles.linkContent}>
-                    <CardMedia component="img" height="150" image={el.image || settings.image}/>
+                  <Link to={`/posts/${el._id}`} className={styles.linkContent}>
+                    <CardMedia component="img" height="150" image={el.photo ? `${IMAGES_URL}/${el.photo}` : settings.image}/>
                     <CardContent>
                       <h5>{el.title}</h5>
-                      <p>{el.content}</p>
                     </CardContent>
                   </Link>
                 </CardActionArea>
                 <CardActions>
-                  <Link to={`/posts/${el.id}`} className={styles.link}>Read more</Link>
+                  <Link to={`/posts/${el._id}`} className={styles.link}>Read more</Link>
                 </CardActions>
               </Card>
             </Grid>

@@ -7,14 +7,14 @@ import styles from './Header.module.scss';
 
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getUser, loginSwitch } from '../../../redux/loginRedux.js';
+import { getUser, loginSwitch, logOut } from '../../../redux/loginRedux.js';
 
 class Component extends React.Component {
-  checkStatus( loginSwitch, user) {
+  checkStatus( logOut, user) {
     if (!user) {
       return (
         <Button variant="contained" className={clsx(styles.root, styles.button)}>
-          <a href="https://google.com">Login</a>
+          <a href="/auth/google">Login with Google</a>
         </Button>
       );
     } else {
@@ -23,7 +23,7 @@ class Component extends React.Component {
           <Link to={`/list/`} className={clsx(styles.link)}>
             My post
           </Link>
-          <Button variant='contained' color='secondary' className={clsx(styles.button)} onClick={loginSwitch}>
+          <Button variant='contained' color='secondary' className={clsx(styles.button)} onClick={logOut}>
             LogOut
           </Button>
         </div>
@@ -32,7 +32,7 @@ class Component extends React.Component {
   }
 
   render() {
-    const { loginSwitch, user} = this.props;
+    const { loginSwitch, user, logOut} = this.props;
     const login = user.logged;
 
     return (
@@ -40,7 +40,7 @@ class Component extends React.Component {
         <Switch onChange={loginSwitch} 
           checked={login}
           inputProps={{ 'aria-label': 'primary checkbox' }}/>
-        {this.checkStatus(loginSwitch, login)}
+        {this.checkStatus(logOut, login)}
       </div>
     );
   }
@@ -51,6 +51,7 @@ Component.propTypes = {
   className: PropTypes.string,
   title: PropTypes.string,
   loginSwitch: PropTypes.func,
+  logOut: PropTypes.func,
   user: PropTypes.object,
 };
 
@@ -60,6 +61,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   loginSwitch: () => dispatch(loginSwitch()),
+  logOut: () => dispatch(logOut()),
+
 });
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(Component);

@@ -9,11 +9,12 @@ import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import shortid from 'shortid';
+import ImageUploader from 'react-images-upload';
+
 
 import { connect } from 'react-redux';
-import { getAll, addPost } from '../../../redux/postsRedux.js';
 import { getUser } from '../../../redux/loginRedux';
+import { addPost, getAll } from '../../../redux/postsRedux.js';
 
 import styles from './PostAdd.module.scss';
 
@@ -33,17 +34,21 @@ const Component = ({ className, addPost, user }) => {
   const contentProps = {
     minLength: 20,
   };
-
   const [post, setPost] = React.useState({
-    id: shortid.generate(),
-    date: date,
-    mail: user.mail,
-    userId: user.id,
-    author: user.author,
+    author: user.mail,
+    title: '',
+    text: '',
+    created: date,
+    phone: '',
+    price: '',
+    location: '',
+    photo: null,
+    updated: null,
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('addPost', post);
     await addPost(post);
   };
 
@@ -53,6 +58,16 @@ const Component = ({ className, addPost, user }) => {
       [name]: event.target.value,
     });
   };
+  const setPhoto = ( files ) => {
+    console.log('setphoto', files);
+    if (files) setPost({ ...post, photo: files[0] });
+  };
+
+  /*const setImage = ({ target }) => {
+    const { files } = target;
+
+    if (files) setPost({ ...post, photo: files[0] });
+  };*/
 
   if(user.logged) {
     return (
@@ -61,8 +76,7 @@ const Component = ({ className, addPost, user }) => {
           <CardHeader title="Add new post"/>
           <form className={styles.form} autoComplete="off" onSubmit={e => handleSubmit(e)}>
             <div>
-              <p>mail: {user.mail} </p>
-              <p>author: {user.author} </p>
+              <p>author: {user.mail} </p>
             </div>
             <TextField
               id="title"
@@ -82,15 +96,16 @@ const Component = ({ className, addPost, user }) => {
             <TextField
               variant="outlined"
               multiline
-              id="content"
+              id="text"
+              label="Text"
               inputProps={contentProps}
-              label="Content"
+
               placeholder="Write your post here"
               rows="10"
               required
-              value={post.content}
-              className={styles.content}
-              onChange={e => handleChange(e, 'content')}
+              value={post.text}
+              className={styles.textProps}
+              onChange={e => handleChange(e, 'text')}
             />
             <TextField
               id="phone"
@@ -99,10 +114,20 @@ const Component = ({ className, addPost, user }) => {
               value={post.phone}
               onChange={e => handleChange(e, 'phone')}
             />
-            <Button variant="contained" component="label" className={styles.button}>
+            {/*<Button variant="contained" component="label" className={styles.button}>
               Upload picture
-              <input type="file" accept="image/*" style={{ display: 'none' }}  onChange={e => handleChange(e, 'image')} />
-            </Button>
+              <input type="file" accept="photo/*" style={{ display: 'none' }} onChange={setPhoto} />
+              </Button>*/}
+            <ImageUploader
+              withIcon={true}
+              buttonText='Choose image'
+              imgExtension={['.jpg', '.gif', '.png', '.gif']}
+              maxFileSize={5242880}
+              withPreview={true}
+              onChange={setPhoto}
+              singleImage={true}
+              //className={(photo.file) ? 'hide' : 'animated fadeInUp'}
+            />
             <InputLabel id="demo-simple-select-label" className={styles.select}>Status</InputLabel>
             <Select
               labelId="post-status-label"
@@ -136,6 +161,7 @@ Component.propTypes = {
   addPost: PropTypes.func,
   user: PropTypes.object,
 
+
 };
 
 const mapStateToProps = state => ({
@@ -144,8 +170,12 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addPost: post => dispatch(addPost(post)),
+  addPost: payload => dispatch(addPost(payload)),
+
 });
+
+
+
 
 const PostAddContainer = connect(mapStateToProps, mapDispatchToProps)(Component);
 

@@ -12,15 +12,13 @@ import clsx from 'clsx';
 
 
 import { connect } from 'react-redux';
-import { getAll, updatePost} from '../../../redux/postsRedux.js';
+import { getPostById, updatePost } from '../../../redux/postsRedux.js';
 import { getUser } from '../../../redux/loginRedux';
 
 
 import styles from './PostEdit.module.scss';
 
-const Component = ({ className, posts, updatePost, match, user }) => {
- 
-  const postArray = posts.filter(el => el.id === match.params.id);
+const Component = ({ className, updatePost, user, propsPost }) => {
 
   const today = new Date();
   const day = today.getDate();
@@ -28,12 +26,10 @@ const Component = ({ className, posts, updatePost, match, user }) => {
   const year = today.getFullYear();
   const updateDateString = day + '.' + month + '.' + year;
 
-
-  
-  const [post, setPost] = React.useState(postArray[0],{
-    updateDate: updateDateString,
+  const [post, setPost] = React.useState({
+    ...propsPost,
+    updated: updateDateString,
   });
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,24 +40,22 @@ const Component = ({ className, posts, updatePost, match, user }) => {
     await setPost({
       ...post,
       [name]: event.target.value,
-      updateDate: updateDateString,
     });
   };
 
-  if(user.logged) {
-    return( 
+  if (user.logged) {
+    return (
       <Container className={clsx(className, styles.root)}>
         <Card className={styles.card}>
-          <CardHeader title="Edit your post!"/>
+          <CardHeader title="Edit your post!" />
           <form className={styles.form} onSubmit={e => handleSubmit(e)}>
             <div>
-              <p>mail: {post.mail} </p>
-              <p>author: {post.author} </p>
-            </div>    
+              <p>author: {user.mail} </p>
+            </div>
 
             <TextField
               required
-              id="post-title"
+              id="post"
               label="Title"
               minLength="10"
               placeholder="Write min. 10 characters here"
@@ -70,7 +64,7 @@ const Component = ({ className, posts, updatePost, match, user }) => {
               className={styles.textField}
             />
             <TextField
-              id="post-price"
+              id="post"
               label="Price"
               className={styles.textField}
               type="number"
@@ -82,13 +76,13 @@ const Component = ({ className, posts, updatePost, match, user }) => {
               variant="outlined"
               multiline
               rows="10"
-              id="post-content"
+              id="post-text"
               label="Description"
               minLength="20"
               placeholder="Write min. 20 characters here"
               className={styles.textField}
-              value={post.content}
-              onChange={e => handleChange(e, 'content')}
+              value={post.text}
+              onChange={e => handleChange(e, 'text')}
             />
             <TextField
               id="post-phone"
@@ -110,9 +104,9 @@ const Component = ({ className, posts, updatePost, match, user }) => {
             </Select>
             <Button variant="contained" component="label" className={styles.button}>
               Upload picture
-              <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => handleChange(e, 'image')}/>
+              <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => handleChange(e, 'image')} />
             </Button>
-            <Button type="submit" color="secondary" variant="contained" className={styles.button}>Save</Button>  
+            <Button type="submit" color="secondary" variant="contained" className={styles.button}>Save</Button>
           </form>
         </Card>
       </Container>
@@ -141,8 +135,8 @@ Component.propTypes = {
   }),
 };
 
-const mapStateToProps = state => ({
-  posts: getAll(state),
+const mapStateToProps = (state, props) => ({
+  propsPost: getPostById(state, props.match.params.id),
   user: getUser(state),
 });
 
